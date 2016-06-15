@@ -1,0 +1,54 @@
+<?php
+/**
+*@file
+*
+*itm_db_form.install
+*/
+
+/**
+*Implements hooj_schema().
+*/
+
+function itm_db_form_schema() {
+  $schema['itm_db_form'] = array(
+    'description' => '',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'description' => 'The form ID',
+        'not null' => 'TRUE',
+        'unsigned' => 'TRUE',
+        ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => 'TRUE',
+        'description' => 'The user ID',
+        ),
+      'name' => array(
+        'type' => 'varchar',
+        'not null' => 'TRUE',
+        'description' => 'The name of the user',
+        'length' => 128,
+        ),
+      'description' => array(
+        'type' => 'text',
+        'not null' => 'TRUE',
+        'description' => 'The user bio',
+        ),
+      'age' => array(
+        'type' => 'int',
+        'not null' => 'TRUE',
+        'description' => 'The age of the user',
+        ),
+    ),
+    'primary key' => array('id'),
+    'foreign key' => array(
+      'users_itm_db_form' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+  );
+
+  return $schema;
+}
