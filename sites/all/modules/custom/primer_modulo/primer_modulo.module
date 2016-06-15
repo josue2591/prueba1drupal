@@ -1,0 +1,107 @@
+<?php
+/**
+*@file
+*
+*primer_modulo.module
+*/
+
+/**
+*Implements hook_help.
+*/
+function primer_modulo_help($path, $arg) {
+  switch($path) {
+    case "admin/help#primer_modulo":
+      return '<p>' . t("This is the help form for the module 'primer_modulo',
+        just an example of how to use hook_help.") . '</p>';
+  }
+}
+
+/**
+*Implements hook_menu.
+*/
+function primer_modulo_menu() {
+  $items = array();
+
+  $items['itm/form'] = array(
+    'title' => t('ITM form'),
+    'description' => t('some text to describe the form'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('itm_form_form'),
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+/**
+*itm_form_form.
+*/
+function itm_form_form($form, &$form_state) {
+ // dpm('Ricardo lo hace mal');
+$form['group'] = array(
+  '#type' => "fieldset",
+  '#title' => t('fieldset'),
+  '#collapsible' => TRUE,
+  );
+
+  $form['group']['primer_modulo_nombre'] = array(
+    '#type' => 'textfield',
+    '#description' => t('Agregue la vara'),
+    '#title' => t('Name'),
+    '#size' => '50',
+    '#required' => TRUE,
+    '#default_value' => variable_get('primer_modulo_nombre', ''),
+  );
+
+  $form['group']['primer_modulo_descripcion'] = array(
+    '#type' => 'textarea',
+    '#description' => t('Agregue la vara'),
+    '#title' => t('Bio'),
+    '#cols' => '100',
+    '#resizable' => FALSE,
+    '#required' => TRUE,
+    '#default_value' => variable_get('primer_modulo_descripcion', ''),
+  );
+
+  $form['group']['primer_modulo_edad'] = array(
+    '#type' => 'textfield',
+    '#description' => 'Agregue la vara',
+    '#title' => t('Age'),
+    '#size' => '50',
+    '#required' => TRUE,
+    '#default_value' => variable_get('primer_modulo_edad', ''),
+    );
+
+  $form['group']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Enviar'),
+    );
+
+    dpm($form, 'the form');
+
+  return $form;
+}
+
+/**
+*validate function
+*/
+function itm_form_form_validate($form, &$form_state) {
+  // dpm($form_state, 'validate');
+  //dpm($form_state, ['values']['primer_module_edad'], 'edad');
+  if (!is_numeric($form_state['values']['primer_modulo_edad']) || !$form_state
+    ['values']['primer_modulo_edad']>0){
+    form_set_error('primer_modulo_edad', 'La edad tiene que ser un numero');
+  }
+}
+
+/**
+*submit function
+*/
+function itm_form_form_submit($form, &$form_state) {
+  dpm($form_state, 'submit');
+  variable_set('primer_modulo_nombre', $form_state['values']['primer_modulo_nombre']);
+  variable_set('primer_modulo_descripcion',$form_state['values']['primer_modulo_descripcion']);
+  variable_set('primer_modulo_edad', $form_state['values']['primer_modulo_edad']);
+
+  drupal_set_message('El mensaje de drupal');
+}
